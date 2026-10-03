@@ -1,6 +1,8 @@
 #include <iostream>
 #include <cstring>
 #include <windows.h>
+#include"Types.h"
+#include"Party.h"
 
 using namespace std;
 
@@ -132,6 +134,7 @@ struct PartyList
 //  10. Виведіть табір ще раз, щоб побачити результат усіх дій.
 //  11. Не забудьте звільнити пам'ять (delete[] party.heroes) наприкінці!
 
+
 int main()
 {
     SetConsoleCP(65001);
@@ -139,7 +142,13 @@ int main()
 
     PartyList party;
 
-    // ЗАПОВНІТЬ ТУТ СЮЖЕТ ГРИ, ВИКОРИСТОВУЮЧИ ВСІ ФУНКЦІЇ, ЯКІ ВИ НАПИСАЛИ
 
-    return 0;
+        SetConsoleCP(65001);
+        SetConsoleOutputCP(65001);
+
+        PartyList party;
+
+
+        return 0;
+    
 }
