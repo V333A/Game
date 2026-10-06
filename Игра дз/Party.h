@@ -55,3 +55,14 @@ void printParty(const PartyList& party);
 
     void sortByLevelDescending(PartyList& party);
 //  -   яка сортує масив героїв за СПАДАННЯМ рівня (level), методом бульбашки
+
+
+    bool savePartyToFile(
+        const PartyList& party,
+        const char* fileName
+    );
+
+    bool loadPartyFromFile(
+        PartyList& party,
+        const char* fileName
+    );

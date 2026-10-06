@@ -1,4 +1,5 @@
 #include<iostream>
+#include<fstream>
 #include"Types.h"
 #include "Party.h"
 using namespace std;
@@ -239,4 +240,85 @@ void sortByLevelDescending(PartyList& party)
 	}
 }
 
+bool savePartyToFile(const PartyList& party, const char* fileName)
+{
+    ofstream file(fileName, ios::binary);
 
+    if (!file.is_open())
+    {
+        return false;
+    }
+
+    // Сначала сохраняем количество героев
+    file.write(
+        reinterpret_cast<const char*>(&party.size),
+        sizeof(party.size)
+    );
+
+    // Затем сохраняем сам массив героев
+    if (party.size > 0)
+    {
+        file.write(
+            reinterpret_cast<const char*>(party.heroes),
+            sizeof(Character) * party.size
+        );
+    }
+
+    file.close();
+
+    return true;
+}
+
+
+bool loadPartyFromFile(PartyList& party, const char* fileName)
+{
+    ifstream file(fileName, ios::binary);
+
+    if (!file.is_open())
+    {
+        return false;
+    }
+
+    int newSize = 0;
+
+    // Читаем количество героев
+    file.read(
+        reinterpret_cast<char*>(&newSize),
+        sizeof(newSize)
+    );
+
+    if (newSize < 0)
+    {
+        file.close();
+        return false;
+    }
+
+    Character* newHeroes = nullptr;
+
+    if (newSize > 0)
+    {
+        newHeroes = new Character[newSize];
+
+        file.read(
+            reinterpret_cast<char*>(newHeroes),
+            sizeof(Character) * newSize
+        );
+
+        if (!file)
+        {
+            delete[] newHeroes;
+            file.close();
+            return false;
+        }
+    }
+
+    // Удаляем старый массив
+    delete[] party.heroes;
+
+    party.heroes = newHeroes;
+    party.size = newSize;
+
+    file.close();
+
+    return true;
+}

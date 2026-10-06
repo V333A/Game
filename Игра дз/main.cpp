@@ -58,9 +58,11 @@ int main()
     recruitHero(party, hero3);
     recruitHero(party, hero4);
 
+
     // 2. Выводим лагерь
     cout << "\n--- PARTY ---\n";
     printParty(party);
+
 
     // 3. Ищем героя
     Character foundHero = getHeroByName(party, "Jaina");
@@ -76,8 +78,10 @@ int main()
         cout << "Weapon: " << foundHero.weapon.name << endl;
     }
 
+
     // 4. Повышаем уровень
     levelUp(party, "Arthas");
+
 
     // 5. Даём новое оружие
     Item newWeapon{
@@ -87,16 +91,23 @@ int main()
 
     equipWeapon(party, "Arthas", newWeapon);
 
+
     // 6. Бой
     damageHero(party, "Thrall", 40);
     healHero(party, "Thrall", 20);
 
+
     // 7. Общая сила
-    cout << "\nTotal party power: "
+    cout << "\n--- TOTAL POWER ---\n";
+
+    cout << "Total party power: "
         << totalPartyPower(party)
         << endl;
 
+
     // 8. Самый сильный герой
+    cout << "\n--- STRONGEST HERO ---\n";
+
     int strongestIndex = findStrongestHeroIndex(party);
 
     if (strongestIndex != -1)
@@ -106,24 +117,66 @@ int main()
             << endl;
     }
 
-    // Используем ещё и сортировку
+
+    // Сортировка по уровню
     sortByLevelDescending(party);
 
     cout << "\n--- SORTED PARTY ---\n";
     printParty(party);
 
+
     // 9. Удаляем героя
     dismissHero(party, "Jaina");
 
-    // 10. Выводим лагерь снова
+
+    // 10. Выводим лагерь после изменений
     cout << "\n--- FINAL PARTY ---\n";
     printParty(party);
 
-    // 11. Освобождаем память
+
+    // 11. Сохраняем лагерь в файл
+    cout << "\n--- SAVE TO FILE ---\n";
+
+    if (savePartyToFile(party, "party.dat"))
+    {
+        cout << "Party successfully saved!" << endl;
+    }
+    else
+    {
+        cout << "Save error!" << endl;
+    }
+
+
+    // Удаляем текущий массив,
+    // чтобы проверить загрузку из файла
+    delete[] party.heroes;
+    party.heroes = nullptr;
+    party.size = 0;
+
+
+    cout << "\n--- PARTY AFTER DELETE ---\n";
+    printParty(party);
+
+
+    // 12. Загружаем лагерь из файла
+    cout << "\n--- LOAD FROM FILE ---\n";
+
+    if (loadPartyFromFile(party, "party.dat"))
+    {
+        cout << "Party successfully loaded!" << endl;
+
+        printParty(party);
+    }
+    else
+    {
+        cout << "Load error!" << endl;
+    }
+
+
+    // 13. Финальная очистка памяти
     delete[] party.heroes;
     party.heroes = nullptr;
     party.size = 0;
 
     return 0;
 }
-
